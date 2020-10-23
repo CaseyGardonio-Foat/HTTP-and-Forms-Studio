@@ -9,16 +9,34 @@
 		"bing": "https://www.bing.com/search",
 		"ask": "https://www.ask.com/web"
 	};	
-	
+	//Mike put this object inside the setSearchEngine function in class, but it works here, too
+
 	function setSearchEngine() {
+		// let searchForm = document.getElementById('searchForm'); 
+		if (!document.querySelector('input[name=engine]:checked')) {
+			alert('Please select a search engine.');
+			event.preventDefault();
+		}
 		let selection=document.querySelector('input[name=engine]:checked');
-		let selectedEngine = actions['selection.value'];
-		console.log(selectedEngine);
+		let selectedEngine = actions[selection.value];
+		
+		searchForm.setAttribute('action', selectedEngine);
 	};
 
     window.addEventListener("load", function(){
-		window.addEventListener("submit", function(event) {
+		// let searchForm = document.getElementById('searchForm'); 
+		//Mike put this here instead of below in class, but the app works with it below as well
+		searchForm.addEventListener("submit", function(event) {
+			let searchTerm = document.querySelector('input[name=q]');
+			let engineSelection = document.querySelector('input[name=engine]')
+			if (searchTerm.value === '') {
+				alert('Please enter a search term.');
+				event.preventDefault();
+			}
 			setSearchEngine();
+			let searchForm = document.getElementById('searchForm');
+			//how do you specify the result of the setSearchEngine function to be the url for this action?
+				//it needs to go in the function, not in the event listener
 		});
 	});
 	</script>
@@ -33,8 +51,10 @@
 		<label>DuckDuckGo<input type='radio' name='engine' value='duckDuckGo'/></label>
 		<label>Bing<input type='radio' name='engine' value='bing'/></label>
 		<label>Ask<input type='radio' name='engine' value='ask'/></label>
-
+		<!--n.b. Mike puts the input before the display text in within the <label> tags
+			including the display text inside the <label> allows you to click the text to select the button-->
 		<button>Submit</button>
+		<!--another way to do this is: <input type='submit' value='Go'/>, but the <button> tag is preferred for screen readers-->
 	</form>
 
 </body>
